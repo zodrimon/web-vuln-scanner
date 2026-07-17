@@ -78,12 +78,12 @@
   Expose `.get()` and `.post()` convenience methods that both funnel
   through one internal `_request()`. Unit test with `requests-mock`
   verifying headers, timeout, and rate-limit delay behavior.
-- [ ] **TASK-013** — `core/plugin_registry.py`: `register_scanner(cls)`
+- [DONE] **TASK-013** — `core/plugin_registry.py`: `register_scanner(cls)`
   decorator and `get_registered_scanners() -> list[type[BaseScanner]]`
   used so `scanners/__init__.py` can auto-discover all scanner plugins
   without the CLI hardcoding imports. Unit test with two dummy scanner
   classes.
-- [ ] **TASK-014** — Commit + push: `TASK-007..013: core infrastructure`.
+- [DONE] **TASK-014** — Commit + push: `TASK-007..013: core infrastructure`.
 
 ## PHASE 2 — Crawler
 
