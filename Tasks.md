@@ -99,10 +99,10 @@
   wrapping `urllib.robotparser`, gracefully returning `True` if
   `robots.txt` is missing/unreachable. Unit test mocking a robots.txt
   response.
-- [ ] **TASK-018** — `crawler/crawler.py` part A: `Crawler.__init__` —
+- [DONE] **TASK-018** — `crawler/crawler.py` part A: `Crawler.__init__` —
   accepts `WvsSession`, `max_depth`, `same_origin_only`,
   `respect_robots_txt`, and initializes visited-set + queue state.
-- [ ] **TASK-019** — `crawler/crawler.py` part B: `Crawler._is_in_scope(url) -> bool`
+- [DONE] **TASK-019** — `crawler/crawler.py` part B: `Crawler._is_in_scope(url) -> bool`
   — same-origin check using `urllib.parse.urlparse` comparing scheme+netloc.
   Unit test with in-scope/out-of-scope URL pairs.
 - [ ] **TASK-020** — `crawler/crawler.py` part C: `Crawler.crawl(start_url) -> list[Endpoint]`
