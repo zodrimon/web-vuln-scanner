@@ -87,7 +87,7 @@
 
 ## PHASE 2 — Crawler
 
-- [ ] **TASK-015** — `crawler/link_parser.py`: `extract_links(html: str, base_url: str) -> set[str]`
+- [DONE] **TASK-015** — `crawler/link_parser.py`: `extract_links(html: str, base_url: str) -> set[str]`
   using BeautifulSoup — pulls `href` from `<a>`, `src` from `<script>`
   and `<img>`, resolves relative URLs via `urllib.parse.urljoin`. Unit
   test with sample HTML fixture.
