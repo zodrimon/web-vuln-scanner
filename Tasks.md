@@ -115,7 +115,7 @@
 
 ## PHASE 3 — SQL Injection Detection
 
-- [ ] **TASK-022** — `scanners/base_scanner.py`: abstract `BaseScanner`
+- [DONE] **TASK-022** — `scanners/base_scanner.py`: abstract `BaseScanner`
   with `name: str`, `severity_default: str`, and abstract method
   `scan(self, endpoint: Endpoint, session: WvsSession) -> list[Finding]`.
 - [ ] **TASK-023** — `scanners/sqli/payloads.py`: define
