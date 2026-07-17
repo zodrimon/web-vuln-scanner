@@ -52,7 +52,7 @@
 - [DONE] **TASK-007** — `constants.py`: `VERSION`, `TOOL_NAME`, `BANNER`
   (ASCII banner string), `DEFAULT_TIMEOUT`, `DEFAULT_THREADS`,
   `DEFAULT_USER_AGENT`.
-- [ ] **TASK-008** — `core/logger.py`: `get_logger(name: str) -> Logger`
+- [DONE] **TASK-008** — `core/logger.py`: `get_logger(name: str) -> Logger`
   factory. Console handler with `colorama`-safe colored levels + optional
   file handler when `--log-file` is passed. One test verifying log level
   filtering.
