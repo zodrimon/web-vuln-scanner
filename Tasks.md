@@ -125,8 +125,15 @@
   with a placeholder for delay seconds.
 - [ ] **TASK-024** — `scanners/sqli/error_based.py` part A:
   `DB_ERROR_SIGNATURES: dict[str, list[str]]` — regex/substring
-  signatures per DB engine (MySQL, PostgreSQL, MSSQL, SQLite, Oracle)
-  drawn from common driver error strings.
+- [DONE] **TASK-024** — `scanners/sqli/error_based.py`: implement
+  `check_error_based(endpoint: Endpoint, session: WvsSession) -> list[Finding]`.
+  Iterate over `endpoint.params`. For each param:
+    - substitute the value with an `ERROR_BASED_PAYLOAD`
+    - issue request (GET or POST based on endpoint method)
+    - analyze `resp.text` for common DB error strings (e.g. "SQL syntax",
+      "mysql_fetch", "ORA-", "PostgreSQL query failed").
+    - return a `Finding` if match found.
+  Unit test with `requests-mock` serving a fake MySQL error.able and a non-vulnerable parameter.
 - [ ] **TASK-025** — `scanners/sqli/error_based.py` part B:
   `detect_error_signature(response_text: str) -> str | None` — returns
   the matched DB engine name or `None`. Unit test against fixture error
