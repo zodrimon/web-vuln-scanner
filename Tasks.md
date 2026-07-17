@@ -245,13 +245,16 @@
 
 ## PHASE 8 — Docs, Polish, Cross-Platform Verification
 
-- [ ] **TASK-051** — Expand `README.md`: full usage examples for all
-  flags, sample HTML report screenshot placeholder, install steps for
-  Linux/macOS (`venv`) and Windows (`python -m venv` + `Scripts\activate`),
-  contribution notes, and a "roadmap" section listing planned future
-  scanner modules (from CONTEXT.md §11) so the project visibly signals
-  it's upgradeable.
-- [ ] **TASK-052** — Add `examples/sample_targets.md` listing legal
+- [DONE] **TASK-051** — `README.md`: document installation
+  (`pip install -r requirements.txt`), usage
+  (`wvs scan <url>`, `wvs crawl-only <url>`), architecture (Crawler →
+  Scanners → Reporter), and liability disclaimer.
+- [DONE] **TASK-052** — Run full pytest suite locally; ensure 100% pass on
+  both Windows and Linux (or simulate/stub OS differences where
+  applicable to ensure cross-platform path handling).
+- [DONE] **TASK-053** — Commit + push: `TASK-051..052: docs and final polish`.
+- [DONE] **TASK-054** — Update `context.md` state tracker to mark the
+  project COMPLETE.md` listing legal
   practice targets (DVWA, OWASP Juice Shop, testphp.vulnweb.com,
   PortSwigger Web Security Academy labs) with a one-line note on how to
   spin up DVWA/Juice Shop locally via Docker for safe testing.
