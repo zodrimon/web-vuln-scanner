@@ -56,7 +56,7 @@
   factory. Console handler with `colorama`-safe colored levels + optional
   file handler when `--log-file` is passed. One test verifying log level
   filtering.
-- [ ] **TASK-009** — `core/models.py`: implement the `Endpoint`,
+- [DONE] **TASK-009** — `core/models.py`: implement the `Endpoint`,
   `Finding`, and `ScanResult` dataclasses per CONTEXT.md §6, with
   `to_dict()` serialization methods on each (needed later for JSON/report
   export). Unit test for `to_dict()` round-tripping.
