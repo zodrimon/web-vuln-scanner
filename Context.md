@@ -347,9 +347,9 @@ don't batch pushes up for "later."
 > first when resuming — but per §12, verify it against `git log` first,
 > since the tracker can go stale if a session ends without a final update.
 
-- **Last completed task:** TASK-017
+- **Last completed task:** TASK-019
 - **Current phase:** Phase 2 — Crawler
-- **Next task to pick up:** TASK-018
-- **Last known-good commit hash:** 36cb40d824f7ff03a5595bc50f5dd47229a19592
+- **Next task to pick up:** TASK-020
+- **Last known-good commit hash:** a4a1aebc18cf695cd89cdd5a8ee938965487a14d
 - **Known issues / blockers:** none
 - **Notes for next session:** none
