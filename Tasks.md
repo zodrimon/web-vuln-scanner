@@ -41,7 +41,7 @@
   `wvs = "wvs.cli:main"`.
 - [DONE] **TASK-005** — Create `requirements.txt` mirroring the runtime deps
   from TASK-004 (for users who don't want editable install).
-- [ ] **TASK-006** — `git init` (if not already a repo), stage everything,
+- [DONE] **TASK-006** — `git init` (if not already a repo), stage everything,
   commit as `TASK-001..006: project scaffolding`, create the GitHub repo
   (via `gh repo create web-vuln-scanner --public --source=. --remote=origin`
   if `gh` CLI is available; otherwise instruct via README how to add the
@@ -49,7 +49,7 @@
 
 ## PHASE 1 — Core Infrastructure
 
-- [ ] **TASK-007** — `constants.py`: `VERSION`, `TOOL_NAME`, `BANNER`
+- [DONE] **TASK-007** — `constants.py`: `VERSION`, `TOOL_NAME`, `BANNER`
   (ASCII banner string), `DEFAULT_TIMEOUT`, `DEFAULT_THREADS`,
   `DEFAULT_USER_AGENT`.
 - [ ] **TASK-008** — `core/logger.py`: `get_logger(name: str) -> Logger`
