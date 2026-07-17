@@ -350,6 +350,6 @@ don't batch pushes up for "later."
 - **Last completed task:** TASK-009
 - **Current phase:** Phase 1 — Core Infrastructure
 - **Next task to pick up:** TASK-010
-- **Last known-good commit hash:** (will update shortly)
+- **Last known-good commit hash:** 7489653ee4f0482e1faa86c82eafb762df8d76e6
 - **Known issues / blockers:** none
 - **Notes for next session:** none
