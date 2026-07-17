@@ -91,7 +91,7 @@
   using BeautifulSoup — pulls `href` from `<a>`, `src` from `<script>`
   and `<img>`, resolves relative URLs via `urllib.parse.urljoin`. Unit
   test with sample HTML fixture.
-- [ ] **TASK-016** — `crawler/form_parser.py`: `extract_forms(html: str, base_url: str) -> list[Endpoint]`
+- [DONE] **TASK-016** — `crawler/form_parser.py`: `extract_forms(html: str, base_url: str) -> list[Endpoint]`
   — parses every `<form>`, its `method` (default GET), resolved `action`
   URL, and all `<input>/<select>/<textarea>` field names as an
   `Endpoint.params` dict. Unit test with a fixture form.
