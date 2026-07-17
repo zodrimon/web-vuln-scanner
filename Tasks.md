@@ -105,13 +105,13 @@
 - [DONE] **TASK-019** — `crawler/crawler.py` part B: `Crawler._is_in_scope(url) -> bool`
   — same-origin check using `urllib.parse.urlparse` comparing scheme+netloc.
   Unit test with in-scope/out-of-scope URL pairs.
-- [ ] **TASK-020** — `crawler/crawler.py` part C: `Crawler.crawl(start_url) -> list[Endpoint]`
+- [DONE] **TASK-020** — `crawler/crawler.py` part C: `Crawler.crawl(start_url) -> list[Endpoint]`
   — BFS loop using `link_parser` + `form_parser`, respecting `max_depth`,
   scope, and robots.txt, threaded fetch via `ThreadPoolExecutor`,
   de-duplicating visited URLs. Integration test against a small fake
   in-memory HTML site (via `requests-mock`) verifying depth limiting and
   dedup.
-- [ ] **TASK-021** — Commit + push: `TASK-015..020: crawler module`.
+- [DONE] **TASK-021** — Commit + push: `TASK-015..020: crawler module`.
 
 ## PHASE 3 — SQL Injection Detection
 

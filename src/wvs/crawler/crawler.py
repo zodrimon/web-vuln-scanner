@@ -42,4 +42,67 @@ class Crawler:
             return True
 
     def crawl(self, start_url: str) -> list[Endpoint]:
-        pass # To be implemented in part C
+        """BFS crawler using link and form parsers."""
+        endpoints = []
+        queue = [(start_url, 0)]  # (url, depth)
+        
+        # Add the starting URL as an endpoint itself, assuming it's a GET
+        endpoints.append(Endpoint(
+            url=start_url,
+            method="GET",
+            params={},
+            source="crawl"
+        ))
+        
+        self._mark_visited(start_url)
+        
+        user_agent = self.session.session.headers.get("User-Agent", "WVS-Bot")
+
+        with ThreadPoolExecutor(max_workers=self.session.rate_limit or 10) as executor:
+            while queue:
+                current_batch = queue[:]
+                queue.clear()
+                
+                # Fetch all in current batch concurrently
+                futures = []
+                for url, depth in current_batch:
+                    if depth >= self.max_depth:
+                        continue
+                        
+                    if self.respect_robots_txt and not is_allowed(url, user_agent):
+                        continue
+                        
+                    futures.append((executor.submit(self.session.get, url), url, depth))
+                
+                # Process results and extract new links/forms
+                for future, url, depth in futures:
+                    try:
+                        resp = future.result()
+                        if resp.status_code != 200:
+                            continue
+                            
+                        # Extract forms
+                        forms = extract_forms(resp.text, resp.url)
+                        for form_endpoint in forms:
+                            if self._is_in_scope(start_url, form_endpoint.url):
+                                endpoints.append(form_endpoint)
+                                
+                        # Extract links
+                        links = extract_links(resp.text, resp.url)
+                        for link in links:
+                            if self._is_in_scope(start_url, link):
+                                if self._mark_visited(link):
+                                    # Basic endpoint for the link
+                                    endpoints.append(Endpoint(
+                                        url=link,
+                                        method="GET",
+                                        params={},
+                                        source="crawl"
+                                    ))
+                                    queue.append((link, depth + 1))
+                                    
+                    except Exception as e:
+                        # Log or ignore fetch errors during crawling
+                        pass
+                        
+        return endpoints
