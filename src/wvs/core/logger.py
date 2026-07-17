@@ -46,3 +46,13 @@ def get_logger(name: str, log_file: Path | str | None = None, level: int = loggi
         logger.addHandler(file_handler)
 
     return logger
+
+def set_log_file(log_file: str | Path, name: str = "wvs", level: int = logging.INFO):
+    """Adds a file handler to an existing logger."""
+    logger = logging.getLogger(name)
+    file_path = Path(log_file) if isinstance(log_file, str) else log_file
+    file_handler = logging.FileHandler(file_path, encoding="utf-8")
+    file_handler.setLevel(level)
+    file_formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s", "%Y-%m-%d %H:%M:%S")
+    file_handler.setFormatter(file_formatter)
+    logger.addHandler(file_handler)

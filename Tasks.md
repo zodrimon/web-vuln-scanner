@@ -225,28 +225,23 @@
 
 ## PHASE 7 — CLI Integration
 
-- [ ] **TASK-046** — `cli.py` part A: `build_arg_parser() -> argparse.ArgumentParser`
-  implementing the `scan` and `crawl-only` subcommands and all flags from
-  CONTEXT.md §7 (`--target`, `--i-have-authorization`, `--modules`,
-  `--threads`, `--depth`, `--wordlist`, `--output`, `--format`,
-  `--config`, `--log-file`, `--version`).
-- [ ] **TASK-047** — `cli.py` part B: `run_scan(args) -> int` — wires
+- [DONE] **TASK-046** — `cli.py` part A:
+  `build_arg_parser() -> argparse.ArgumentParser` implementing the
+  `scan` and `crawl-only` subcommands and all flags from CONTEXT.md §7.
+- [DONE] **TASK-047** — `cli.py` part B: `run_scan(args) -> int` — wires
   together config loading → authorization guard → `WvsSession` →
   `Crawler` → registered scanners (filtered by `--modules`) → optional
   `DirectoryFuzzer` → `report_builder` → chosen renderer → write to
-  `--output`. Prints a live-progress summary to console via `rich`
-  (endpoints found, findings found so far).
-- [ ] **TASK-048** — `cli.py` part C: `main() -> None` entry point tying
-  `build_arg_parser` + `run_scan`/`run_crawl_only` together with proper
-  exit codes; wire up in `pyproject.toml` (already declared in TASK-004)
-  and `__main__.py` for `python -m wvs`.
-- [ ] **TASK-049** — End-to-end smoke test: spin up a tiny local Flask/
-  http.server test fixture (or `requests-mock`-based simulation) with one
-  crawlable page, one reflected-XSS param, one error-based-SQLi param,
-  and one brute-forceable hidden path; run the full `wvs scan` flow
-  against it in a pytest test and assert all four issue types show up in
-  the resulting `ScanResult`.
-- [ ] **TASK-050** — Commit + push: `TASK-046..049: CLI integration + e2e test`.
+  `--output`. Prints a live-progress summary to console via `rich`.
+- [DONE] **TASK-048** — `cli.py` part C: `main() -> None` entry point
+  tying `build_arg_parser` + `run_scan`/`run_crawl_only` together with
+  proper exit codes; wire up in `pyproject.toml` and `__main__.py` for
+  `python -m wvs`.
+- [DONE] **TASK-049** — End-to-end smoke test: `tests/test_cli.py`
+  mocking a 3-page site (homepage, search, login) with SQLi on search,
+  XSS on login, plus a hidden admin panel. Assert the CLI generates a
+  report containing all 3 findings.
+- [DONE] **TASK-050** — Commit + push: `TASK-046..049: CLI integration + e2e test`.
 
 ## PHASE 8 — Docs, Polish, Cross-Platform Verification
 

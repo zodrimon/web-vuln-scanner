@@ -92,11 +92,17 @@ class Crawler:
                         for link in links:
                             if self._is_in_scope(start_url, link):
                                 if self._mark_visited(link):
-                                    # Basic endpoint for the link
+                                    # Parse query params
+                                    parsed_link = urllib.parse.urlparse(link)
+                                    query_params = {}
+                                    if parsed_link.query:
+                                        query_params = dict(urllib.parse.parse_qsl(parsed_link.query))
+                                        
+                                    base_url = urllib.parse.urlunparse((parsed_link.scheme, parsed_link.netloc, parsed_link.path, parsed_link.params, '', ''))
                                     endpoints.append(Endpoint(
-                                        url=link,
+                                        url=base_url,
                                         method="GET",
-                                        params={},
+                                        params=query_params,
                                         source="crawl"
                                     ))
                                     queue.append((link, depth + 1))
