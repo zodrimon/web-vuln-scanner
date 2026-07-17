@@ -138,11 +138,11 @@
   and emits a `Finding` (severity `high`) on match. Register via
   `@register_scanner`. Integration test with `requests-mock` simulating
   a vulnerable and a non-vulnerable parameter.
-- [ ] **TASK-027** — `scanners/sqli/time_based.py` part A:
+- [DONE] **TASK-027** — `scanners/sqli/time_based.py` part A:
   `measure_baseline_latency(session, endpoint) -> float` — sends a clean
   request and records response time, run twice and averaged to reduce
   noise.
-- [ ] **TASK-028** — `scanners/sqli/time_based.py` part B:
+- [DONE] **TASK-028** — `scanners/sqli/time_based.py` part B:
   `TimeBasedSqliScanner(BaseScanner)` — for each parameter, injects each
   payload from `TIME_BASED_PAYLOADS` with a configured delay (default 5s),
   compares observed latency against baseline + delay threshold, emits a
@@ -151,7 +151,7 @@
   false positives from network jitter). Register via `@register_scanner`.
   Unit test with `requests-mock` using a `response_delay`/callback to
   simulate slow vs normal responses.
-- [ ] **TASK-029** — Commit + push: `TASK-022..028: SQLi detection modules`.
+- [DONE] **TASK-029** — Commit + push: `TASK-022..028: SQLi detection modules`.
 
 ## PHASE 4 — Reflected XSS Detection
 
