@@ -155,26 +155,26 @@
 
 ## PHASE 4 — Reflected XSS Detection
 
-- [ ] **TASK-030** — `scanners/xss/payloads.py`: `REFLECTED_XSS_PAYLOADS: list[str]`
+- [DONE] **TASK-030** — `scanners/xss/payloads.py`: `REFLECTED_XSS_PAYLOADS: list[str]`
   — a small set of unique, easily-fingerprinted marker payloads (e.g.
   `<wvsXSSmarker>alert(1)</wvsXSSmarker>` style with a random-ish token
   per run to reduce false positives from cached/static content).
-- [ ] **TASK-031** — `scanners/xss/reflected.py` part A:
+- [DONE] **TASK-031** — `scanners/xss/reflected.py` part A:
   `generate_marker() -> str` — returns a unique per-scan token to embed
   in payloads so reflection detection can't be fooled by unrelated
   page content.
-- [ ] **TASK-032** — `scanners/xss/reflected.py` part B:
+- [DONE] **TASK-032** — `scanners/xss/reflected.py` part B:
   `is_reflected_unescaped(response_text: str, marker: str) -> bool` —
   checks whether the raw marker/payload appears unescaped (i.e. not
   HTML-entity-encoded) in the response body.
-- [ ] **TASK-033** — `scanners/xss/reflected.py` part C:
+- [DONE] **TASK-033** — `scanners/xss/reflected.py` part C:
   `ReflectedXssScanner(BaseScanner)` — for each parameter, injects each
   payload (with marker) via GET and POST as applicable, checks
   `is_reflected_unescaped`, emits a `Finding` (severity `medium`) on
   match with the reflected snippet as evidence. Register via
   `@register_scanner`. Integration test with `requests-mock` simulating
   reflected vs. escaped output.
-- [ ] **TASK-034** — Commit + push: `TASK-030..033: reflected XSS detection`.
+- [DONE] **TASK-034** — Commit + push: `TASK-030..033: reflected XSS detection`.
 
 ## PHASE 5 — Directory / File Brute-Forcing
 
