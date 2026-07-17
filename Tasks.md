@@ -95,7 +95,7 @@
   — parses every `<form>`, its `method` (default GET), resolved `action`
   URL, and all `<input>/<select>/<textarea>` field names as an
   `Endpoint.params` dict. Unit test with a fixture form.
-- [ ] **TASK-017** — `crawler/robots.py`: `is_allowed(url: str, user_agent: str) -> bool`
+- [DONE] **TASK-017** — `crawler/robots.py`: `is_allowed(url: str, user_agent: str) -> bool`
   wrapping `urllib.robotparser`, gracefully returning `True` if
   `robots.txt` is missing/unreachable. Unit test mocking a robots.txt
   response.
