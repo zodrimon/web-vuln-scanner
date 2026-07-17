@@ -1,62 +1,83 @@
 from wvs.core.models import Endpoint, Finding
 from wvs.core.http_session import WvsSession
 from wvs.scanners.sqli.payloads import ERROR_BASED_PAYLOADS
+from wvs.scanners.base_scanner import BaseScanner
+from wvs.core.plugin_registry import register_scanner
 
-DB_ERRORS = [
-    "sql syntax",
-    "mysql_fetch",
-    "ora-",
-    "postgresql query failed",
-    "sqlite3::sqlexception",
-    "microsoft ole db provider for sql server",
-    "unclosed quotation mark after the character string"
-]
+DB_ERROR_SIGNATURES = {
+    "MySQL": [
+        "sql syntax",
+        "mysql_fetch",
+    ],
+    "PostgreSQL": [
+        "postgresql query failed",
+        "pg_query",
+    ],
+    "MSSQL": [
+        "microsoft ole db provider for sql server",
+        "unclosed quotation mark after the character string",
+    ],
+    "SQLite": [
+        "sqlite3::sqlexception",
+        "sqlite_error",
+    ],
+    "Oracle": [
+        "ora-",
+        "oracle error",
+    ]
+}
 
-def check_error_based(endpoint: Endpoint, session: WvsSession) -> list[Finding]:
-    """Check for error-based SQL injection on the endpoint's parameters."""
-    findings = []
-    
-    if not endpoint.params:
-        return findings
+def detect_error_signature(response_text: str) -> str | None:
+    """Returns the matched DB engine name or None."""
+    lower_text = response_text.lower()
+    for engine, signatures in DB_ERROR_SIGNATURES.items():
+        for sig in signatures:
+            if sig.lower() in lower_text:
+                return engine
+    return None
+
+@register_scanner
+class ErrorBasedSqliScanner(BaseScanner):
+    @property
+    def name(self) -> str:
+        return "sqli_error_based"
         
-    for param, original_value in endpoint.params.items():
-        for payload in ERROR_BASED_PAYLOADS:
-            test_params = endpoint.params.copy()
-            # Append payload to original value
-            test_params[param] = f"{original_value}{payload}"
+    @property
+    def severity_default(self) -> str:
+        return "high"
+
+    def scan(self, endpoint: Endpoint, session: WvsSession) -> list[Finding]:
+        """Check for error-based SQL injection on the endpoint's parameters."""
+        findings = []
+        
+        if not endpoint.params:
+            return findings
             
-            try:
-                if endpoint.method == "POST":
-                    resp = session.post(endpoint.url, data=test_params)
-                else:
-                    resp = session.get(endpoint.url, params=test_params)
-                    
-                resp_text_lower = resp.text.lower()
+        for param, original_value in endpoint.params.items():
+            for payload in ERROR_BASED_PAYLOADS:
+                test_params = endpoint.params.copy()
+                test_params[param] = f"{original_value}{payload}"
                 
-                matched_error = None
-                for db_error in DB_ERRORS:
-                    if db_error in resp_text_lower:
-                        matched_error = db_error
-                        break
+                try:
+                    if endpoint.method == "POST":
+                        resp = session.post(endpoint.url, data=test_params)
+                    else:
+                        resp = session.get(endpoint.url, params=test_params)
                         
-                if matched_error:
-                    findings.append(Finding(
-                        vuln_type="SQL Injection (Error Based)",
-                        severity="high",
-                        endpoint=endpoint,
-                        parameter=param,
-                        payload=payload,
-                        evidence=f"Matched error pattern: {matched_error}",
-                        description="Database error indicating possible SQL Injection.",
-                        remediation="Use parameterized queries."
-                    ))
-                    # If we found an injection on this param with one payload,
-                    # we can skip the rest of the payloads for this specific param
-                    # to save time and reduce noise.
-                    break
+                    matched_engine = detect_error_signature(resp.text)
+                    if matched_engine:
+                        findings.append(Finding(
+                            vuln_type="SQL Injection (Error Based)",
+                            severity=self.severity_default,
+                            endpoint=endpoint,
+                            parameter=param,
+                            payload=payload,
+                            evidence=f"Matched DB engine error: {matched_engine}",
+                            description=f"Database error indicating possible {matched_engine} SQL Injection.",
+                            remediation="Use parameterized queries."
+                        ))
+                        break
+                except Exception:
+                    pass
                     
-            except Exception:
-                # If network fails, skip this payload
-                pass
-                
-    return findings
+        return findings
