@@ -71,7 +71,7 @@
   prompts `y/N` interactively, else returns False in non-interactive
   contexts). Unit test for both flag-provided and flag-missing paths
   (mock `input()`).
-- [ ] **TASK-012** — `core/http_session.py`: `WvsSession` class wrapping
+- [DONE] **TASK-012** — `core/http_session.py`: `WvsSession` class wrapping
   `requests.Session` — sets User-Agent, per-request timeout, automatic
   retry (via `urllib3.Retry`) on 5xx/connection errors, and a token-
   bucket rate limiter respecting `rate_limit_per_second` from config.
