@@ -17,7 +17,11 @@ WVS is an automated web vulnerability scanner designed to crawl websites, discov
 
 **Legal & Liability Disclaimer**: This tool is provided for educational and authorized testing purposes only. You must obtain explicit, written permission from the owner of the target system before running any scans. The authors are not responsible for any misuse, damage, or legal consequences caused by the use of this software. By using this tool, you agree to take full responsibility for your actions.
 
-## Installation
+## Installation & Usage Guide
+
+For a full breakdown of how to install WVS on Linux, Windows, or macOS, and a comprehensive explanation of how to use its CLI flags, please refer to the [WVS User Manual](file:///c:/projects/MANUAL.md).
+
+### Quick Start
 
 This project requires Python 3.10+.
 

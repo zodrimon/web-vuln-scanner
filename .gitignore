@@ -22,3 +22,8 @@ build/
 
 # Output
 wvs_report.*
+
+# Planning and Context files
+Tasks.md
+context.md
+TASKS.md
