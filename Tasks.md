@@ -178,29 +178,29 @@
 
 ## PHASE 5 — Directory / File Brute-Forcing
 
-- [ ] **TASK-035** — create `wordlists/common_dirs.txt` — a seed list of
+- [DONE] **TASK-035** — create `wordlists/common_dirs.txt` — a seed list of
   ~150-300 common paths/files (admin, backup, config, .git, .env,
   robots.txt, api, uploads, etc.) — small and self-contained so the repo
   doesn't depend on external wordlist downloads.
-- [ ] **TASK-036** — `bruteforce/status_filter.py`: `should_report(status_code: int, response_size: int, ignore_codes: set[int], baseline_404_size: int | None) -> bool`
+- [DONE] **TASK-036** — `bruteforce/status_filter.py`: `should_report(status_code: int, response_size: int, ignore_codes: set[int], baseline_404_size: int | None) -> bool`
   — filters out expected 404s and configurable ignored status codes;
   optionally detects "soft 404" pages by comparing response size against
   a measured baseline for a known-bogus path. Unit test covering both
   hard-404 and soft-404 cases.
-- [ ] **TASK-037** — `bruteforce/fuzzer.py` part A:
+- [DONE] **TASK-037** — `bruteforce/fuzzer.py` part A:
   `load_wordlist(path: Path) -> list[str]` — reads a wordlist file,
   strips blank lines/comments (`#`).
-- [ ] **TASK-038** — `bruteforce/fuzzer.py` part B:
+- [DONE] **TASK-038** — `bruteforce/fuzzer.py` part B:
   `build_candidate_urls(base_url: str, words: list[str], extensions: list[str]) -> list[str]`
   — cartesian product of words x extensions, joined onto `base_url`.
-- [ ] **TASK-039** — `bruteforce/fuzzer.py` part C:
+- [DONE] **TASK-039** — `bruteforce/fuzzer.py` part C:
   `DirectoryFuzzer` class — threaded (`ThreadPoolExecutor`) requester
   that fetches every candidate URL via `WvsSession`, applies
   `status_filter.should_report`, and yields `Finding` objects
   (`vuln_type="Exposed-Path"`, severity based on path sensitivity — e.g.
   `.git`/`.env` = high, generic admin panel = low/info). Integration
   test with `requests-mock` covering found/not-found/soft-404 cases.
-- [ ] **TASK-040** — Commit + push: `TASK-035..039: brute-force fuzzer`.
+- [DONE] **TASK-040** — Commit + push: `TASK-035..039: brute-force fuzzer`.
 
 ## PHASE 6 — Report Generator
 
