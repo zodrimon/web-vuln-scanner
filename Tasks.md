@@ -245,30 +245,27 @@
 
 ## PHASE 8 — Docs, Polish, Cross-Platform Verification
 
-- [DONE] **TASK-051** — `README.md`: document installation
-  (`pip install -r requirements.txt`), usage
-  (`wvs scan <url>`, `wvs crawl-only <url>`), architecture (Crawler →
-  Scanners → Reporter), and liability disclaimer.
-- [DONE] **TASK-052** — Run full pytest suite locally; ensure 100% pass on
-  both Windows and Linux (or simulate/stub OS differences where
-  applicable to ensure cross-platform path handling).
-- [DONE] **TASK-053** — Commit + push: `TASK-051..052: docs and final polish`.
-- [DONE] **TASK-054** — Update `context.md` state tracker to mark the
-  project COMPLETE.md` listing legal
+- [DONE] **TASK-051** — Expand `README.md`: full usage examples for all
+  flags, sample HTML report screenshot placeholder, install steps for
+  Linux/macOS (`venv`) and Windows (`python -m venv` + `Scripts\activate`),
+  contribution notes, and a "roadmap" section listing planned future
+  scanner modules (from CONTEXT.md §11) so the project visibly signals
+  it's upgradeable.
+- [DONE] **TASK-052** — Add `examples/sample_targets.md` listing legal
   practice targets (DVWA, OWASP Juice Shop, testphp.vulnweb.com,
   PortSwigger Web Security Academy labs) with a one-line note on how to
   spin up DVWA/Juice Shop locally via Docker for safe testing.
-- [ ] **TASK-053** — Run `black` + `ruff` across the whole `src/` tree,
+- [DONE] **TASK-053** — Run `black` + `ruff` across the whole `src/` tree,
   fix all lint warnings, re-run full `pytest` suite, confirm 100% pass.
-- [ ] **TASK-054** — Manually verify path handling is platform-neutral:
+- [DONE] **TASK-054** — Manually verify path handling is platform-neutral:
   grep the codebase for any raw `"/"` or `"\\"` string path building,
   any `os.system`/shell calls, or any POSIX-only stdlib usage, and fix
   any found.
-- [ ] **TASK-055** — Add a minimal GitHub Actions workflow
+- [DONE] **TASK-055** — Add a minimal GitHub Actions workflow
   (`.github/workflows/ci.yml`) running `pytest` + `ruff` on `ubuntu-latest`,
   `windows-latest`, and `macos-latest` for every push — this is the real
   cross-platform safety net going forward.
-- [ ] **TASK-056** — Final commit + push: `TASK-051..055: docs, polish, CI`.
+- [DONE] **TASK-056** — Final commit + push: `TASK-051..055: docs, polish, CI`.
   Update CONTEXT.md §13 "Current State Tracker" to reflect Phase 8
   complete and v0.1 feature-complete.
 

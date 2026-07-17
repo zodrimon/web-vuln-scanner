@@ -3,8 +3,10 @@ from pathlib import Path
 import argparse
 from typing import Any
 
+
 class ConfigError(Exception):
     pass
+
 
 def deep_merge(dict1: dict, dict2: dict) -> dict:
     """Deep merge dict2 into dict1."""
@@ -16,45 +18,39 @@ def deep_merge(dict1: dict, dict2: dict) -> dict:
             result[key] = value
     return result
 
-def load_config(path: Path | None = None, cli_args: argparse.Namespace | None = None) -> dict[str, Any]:
+
+def load_config(
+    path: Path | None = None, cli_args: argparse.Namespace | None = None
+) -> dict[str, Any]:
     """Load config from default, user override, and CLI args."""
-    
+
     # Base structure that must exist
     config = {
         "threads": 10,
         "timeout_seconds": 8,
         "rate_limit_per_second": 5,
         "user_agent": "WVS/0.1 (+https://github.com/zodrimon/web-vuln-scanner)",
-        "crawl": {
-            "max_depth": 3,
-            "same_origin_only": True,
-            "respect_robots_txt": True
-        },
+        "crawl": {"max_depth": 3, "same_origin_only": True, "respect_robots_txt": True},
         "modules": ["sqli", "xss", "bruteforce"],
-        "sqli": {
-            "time_delay_seconds": 5
-        },
+        "sqli": {"time_delay_seconds": 5},
         "bruteforce": {
             "wordlist": "wordlists/common_dirs.txt",
-            "extensions": ["", ".php", ".bak", ".txt"]
+            "extensions": ["", ".php", ".bak", ".txt"],
         },
-        "report": {
-            "format": "html",
-            "output_path": "wvs_report.html"
-        }
+        "report": {"format": "html", "output_path": "wvs_report.html"},
     }
-    
+
     default_config_path = Path("config/default_config.yaml")
     if default_config_path.exists():
         with open(default_config_path, "r") as f:
             default_yaml = yaml.safe_load(f) or {}
             config = deep_merge(config, default_yaml)
-            
+
     if path and path.exists():
         with open(path, "r") as f:
             user_yaml = yaml.safe_load(f) or {}
             config = deep_merge(config, user_yaml)
-            
+
     # CLI Overrides
     if cli_args:
         if hasattr(cli_args, "threads") and cli_args.threads is not None:
@@ -69,11 +65,21 @@ def load_config(path: Path | None = None, cli_args: argparse.Namespace | None = 
             config["report"]["output_path"] = cli_args.output
         if hasattr(cli_args, "format") and cli_args.format:
             config["report"]["format"] = cli_args.format
-            
+
     # Validation
-    required_keys = ["threads", "timeout_seconds", "rate_limit_per_second", "user_agent", "crawl", "modules", "sqli", "bruteforce", "report"]
+    required_keys = [
+        "threads",
+        "timeout_seconds",
+        "rate_limit_per_second",
+        "user_agent",
+        "crawl",
+        "modules",
+        "sqli",
+        "bruteforce",
+        "report",
+    ]
     for key in required_keys:
         if key not in config:
             raise ConfigError(f"Missing required config key: {key}")
-            
+
     return config

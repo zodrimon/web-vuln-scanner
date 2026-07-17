@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field, asdict
 from datetime import datetime
 
+
 @dataclass
 class Endpoint:
     url: str
@@ -10,6 +11,7 @@ class Endpoint:
 
     def to_dict(self) -> dict:
         return asdict(self)
+
 
 @dataclass
 class Finding:
@@ -26,6 +28,7 @@ class Finding:
         d = asdict(self)
         d["endpoint"] = self.endpoint.to_dict()
         return d
+
 
 @dataclass
 class ScanResult:

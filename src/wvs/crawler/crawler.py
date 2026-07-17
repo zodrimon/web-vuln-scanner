@@ -7,27 +7,36 @@ from wvs.crawler.link_parser import extract_links
 from wvs.crawler.form_parser import extract_forms
 from wvs.crawler.robots import is_allowed
 
+
 class Crawler:
-    def __init__(self, session: WvsSession, max_depth: int = 3, same_origin_only: bool = True, respect_robots_txt: bool = True):
+    def __init__(
+        self,
+        session: WvsSession,
+        max_depth: int = 3,
+        same_origin_only: bool = True,
+        respect_robots_txt: bool = True,
+    ):
         self.session = session
         self.max_depth = max_depth
         self.same_origin_only = same_origin_only
         self.respect_robots_txt = respect_robots_txt
-        
+
         self._visited: set[str] = set()
         self._lock = threading.Lock()
-        
+
     def _is_in_scope(self, start_url: str, target_url: str) -> bool:
         """Check if target_url is in scope based on start_url."""
         if not self.same_origin_only:
             return True
-            
+
         start_parsed = urllib.parse.urlparse(start_url)
         target_parsed = urllib.parse.urlparse(target_url)
-        
-        return (start_parsed.scheme == target_parsed.scheme and
-                start_parsed.netloc == target_parsed.netloc)
-                
+
+        return (
+            start_parsed.scheme == target_parsed.scheme
+            and start_parsed.netloc == target_parsed.netloc
+        )
+
     def _mark_visited(self, url: str) -> bool:
         """Returns True if this is the first time visiting this URL."""
         # Normalize URL to remove fragments for deduplication
@@ -45,48 +54,45 @@ class Crawler:
         """BFS crawler using link and form parsers."""
         endpoints = []
         queue = [(start_url, 0)]  # (url, depth)
-        
+
         # Add the starting URL as an endpoint itself, assuming it's a GET
-        endpoints.append(Endpoint(
-            url=start_url,
-            method="GET",
-            params={},
-            source="crawl"
-        ))
-        
+        endpoints.append(
+            Endpoint(url=start_url, method="GET", params={}, source="crawl")
+        )
+
         self._mark_visited(start_url)
-        
+
         user_agent = self.session.session.headers.get("User-Agent", "WVS-Bot")
 
         with ThreadPoolExecutor(max_workers=self.session.rate_limit or 10) as executor:
             while queue:
                 current_batch = queue[:]
                 queue.clear()
-                
+
                 # Fetch all in current batch concurrently
                 futures = []
                 for url, depth in current_batch:
                     if depth >= self.max_depth:
                         continue
-                        
+
                     if self.respect_robots_txt and not is_allowed(url, user_agent):
                         continue
-                        
+
                     futures.append((executor.submit(self.session.get, url), url, depth))
-                
+
                 # Process results and extract new links/forms
                 for future, url, depth in futures:
                     try:
                         resp = future.result()
                         if resp.status_code != 200:
                             continue
-                            
+
                         # Extract forms
                         forms = extract_forms(resp.text, resp.url)
                         for form_endpoint in forms:
                             if self._is_in_scope(start_url, form_endpoint.url):
                                 endpoints.append(form_endpoint)
-                                
+
                         # Extract links
                         links = extract_links(resp.text, resp.url)
                         for link in links:
@@ -96,19 +102,32 @@ class Crawler:
                                     parsed_link = urllib.parse.urlparse(link)
                                     query_params = {}
                                     if parsed_link.query:
-                                        query_params = dict(urllib.parse.parse_qsl(parsed_link.query))
-                                        
-                                    base_url = urllib.parse.urlunparse((parsed_link.scheme, parsed_link.netloc, parsed_link.path, parsed_link.params, '', ''))
-                                    endpoints.append(Endpoint(
-                                        url=base_url,
-                                        method="GET",
-                                        params=query_params,
-                                        source="crawl"
-                                    ))
+                                        query_params = dict(
+                                            urllib.parse.parse_qsl(parsed_link.query)
+                                        )
+
+                                    base_url = urllib.parse.urlunparse(
+                                        (
+                                            parsed_link.scheme,
+                                            parsed_link.netloc,
+                                            parsed_link.path,
+                                            parsed_link.params,
+                                            "",
+                                            "",
+                                        )
+                                    )
+                                    endpoints.append(
+                                        Endpoint(
+                                            url=base_url,
+                                            method="GET",
+                                            params=query_params,
+                                            source="crawl",
+                                        )
+                                    )
                                     queue.append((link, depth + 1))
-                                    
-                    except Exception as e:
+
+                    except Exception:
                         # Log or ignore fetch errors during crawling
                         pass
-                        
+
         return endpoints

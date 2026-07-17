@@ -64,6 +64,8 @@ To only crawl the target and list discovered endpoints without running any vulne
 python -m wvs crawl-only "http://example.com" --i-have-authorization
 ```
 
+*Screenshot of the HTML report.*
+
 ## Architecture
 
 WVS is built with a modular, pipeline-based architecture:
@@ -83,3 +85,18 @@ Run the pytest suite to verify all modules:
 ```bash
 pytest tests/
 ```
+
+## Contributing
+
+Contributions are welcome! Please ensure that you add unit tests for any new modules and run `black` and `ruff` against the codebase before submitting a PR.
+
+## Roadmap
+
+Future modules planned for WVS:
+- **SSTI** (Server-Side Template Injection)
+- **Command Injection**
+- **Open Redirect**
+- **Security Headers Auditor** (CSP, HSTS, etc.)
+- **CORS Misconfiguration Checker**
+- **Session/Cookie/Auth Support** (for authenticated scanning)
+- **Proxy Support** (route traffic through Burp Suite)

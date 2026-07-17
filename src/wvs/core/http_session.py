@@ -4,14 +4,17 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 from threading import Lock
 
+
 class WvsSession:
     """Wrapper around requests.Session with rate limiting, timeouts, and retries."""
-    
-    def __init__(self, user_agent: str, rate_limit_per_second: int, timeout_seconds: int):
+
+    def __init__(
+        self, user_agent: str, rate_limit_per_second: int, timeout_seconds: int
+    ):
         self.session = requests.Session()
         self.session.headers.update({"User-Agent": user_agent})
         self.timeout = timeout_seconds
-        
+
         # Setup retries for 5xx errors and connection issues
         # Note: requests_mock does not fully support urllib3 Retry integration natively
         # so we have to manually simulate retry loop in tests, or we just configure it here
@@ -20,23 +23,25 @@ class WvsSession:
             total=3,
             backoff_factor=0.1,
             status_forcelist=[500, 502, 503, 504],
-            allowed_methods=["GET", "POST", "HEAD", "OPTIONS"]
+            allowed_methods=["GET", "POST", "HEAD", "OPTIONS"],
         )
         adapter = HTTPAdapter(max_retries=retries)
         self.session.mount("http://", adapter)
         self.session.mount("https://", adapter)
-        
+
         # Token bucket rate limiter
         self.rate_limit = rate_limit_per_second
-        self._min_interval = 1.0 / rate_limit_per_second if rate_limit_per_second > 0 else 0
+        self._min_interval = (
+            1.0 / rate_limit_per_second if rate_limit_per_second > 0 else 0
+        )
         self._last_request_time = 0.0
         self._lock = Lock()
-        
+
     def _wait_for_rate_limit(self):
         """Thread-safe rate limiting wait."""
         if self._min_interval <= 0:
             return
-            
+
         with self._lock:
             now = time.time()
             elapsed = now - self._last_request_time
