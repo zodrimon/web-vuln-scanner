@@ -1,0 +1,33 @@
+[project]
+name = "web-vuln-scanner"
+version = "0.1.0"
+description = "A modular, CLI-first mini web-app security scanner"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+  { name = "Rimon" }
+]
+dependencies = [
+  "requests",
+  "beautifulsoup4",
+  "lxml",
+  "PyYAML",
+  "Jinja2",
+  "colorama",
+  "rich"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "requests-mock",
+  "black",
+  "ruff"
+]
+
+[project.scripts]
+wvs = "wvs.cli:main"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
