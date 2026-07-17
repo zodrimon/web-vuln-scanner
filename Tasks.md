@@ -60,7 +60,7 @@
   `Finding`, and `ScanResult` dataclasses per CONTEXT.md §6, with
   `to_dict()` serialization methods on each (needed later for JSON/report
   export). Unit test for `to_dict()` round-tripping.
-- [ ] **TASK-010** — `config.py`: `load_config(path: Path | None) -> dict`
+- [DONE] **TASK-010** — `config.py`: `load_config(path: Path | None) -> dict`
   that loads `config/default_config.yaml`, deep-merges any user-supplied
   YAML override, then deep-merges CLI-flag overrides on top. Validate
   required keys exist; raise a clear `ConfigError` if not. Unit test with
