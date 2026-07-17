@@ -65,7 +65,7 @@
   YAML override, then deep-merges CLI-flag overrides on top. Validate
   required keys exist; raise a clear `ConfigError` if not. Unit test with
   a sample override file.
-- [ ] **TASK-011** — `core/authorization.py`: implement
+- [DONE] **TASK-011** — `core/authorization.py`: implement
   `confirm_authorized(target: str, flag_provided: bool) -> bool` per
   CONTEXT.md §13 (checks `--i-have-authorization` flag first, else
   prompts `y/N` interactively, else returns False in non-interactive
