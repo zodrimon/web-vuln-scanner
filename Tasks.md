@@ -118,7 +118,7 @@
 - [DONE] **TASK-022** — `scanners/base_scanner.py`: abstract `BaseScanner`
   with `name: str`, `severity_default: str`, and abstract method
   `scan(self, endpoint: Endpoint, session: WvsSession) -> list[Finding]`.
-- [ ] **TASK-023** — `scanners/sqli/payloads.py`: define
+- [DONE] **TASK-023** — `scanners/sqli/payloads.py`: define
   `ERROR_BASED_PAYLOADS: list[str]` (classic single-quote/comment
   breakers) and `TIME_BASED_PAYLOADS: dict[str, str]` keyed by DB engine
   guess (MySQL `SLEEP()`, PostgreSQL `pg_sleep()`, MSSQL `WAITFOR DELAY`)
