@@ -133,7 +133,7 @@
     - analyze `resp.text` for common DB error strings (e.g. "SQL syntax",
       "mysql_fetch", "ORA-", "PostgreSQL query failed").
     - return a `Finding` if match found.
-  Unit test with `requests-mock` serving a fake MySQL error.able and a non-vulnerable parameter.
+  Unit test with `requests-mock` serving a fake MySQL error.
 - [ ] **TASK-025** — `scanners/sqli/error_based.py` part B:
   `detect_error_signature(response_text: str) -> str | None` — returns
   the matched DB engine name or `None`. Unit test against fixture error
