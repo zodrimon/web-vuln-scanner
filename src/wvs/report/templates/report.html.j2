@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WVS Report: {{ result.target }}</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 1200px; margin: 0 auto; padding: 20px; background-color: #f8f9fa; }
+        .header { background-color: #fff; padding: 20px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .header h1 { margin-top: 0; color: #2c3e50; }
+        .summary-boxes { display: flex; gap: 10px; margin-top: 20px; }
+        .summary-box { flex: 1; padding: 15px; border-radius: 5px; color: white; font-weight: bold; text-align: center; }
+        .bg-critical { background-color: #dc3545; }
+        .bg-high { background-color: #fd7e14; }
+        .bg-medium { background-color: #ffc107; color: #333; }
+        .bg-low { background-color: #28a745; }
+        .bg-info { background-color: #17a2b8; }
+        
+        .finding { background-color: #fff; margin-bottom: 15px; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+        .finding-header { padding: 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid #ccc; background-color: #fdfdfd; }
+        .finding-header:hover { background-color: #f5f5f5; }
+        
+        .border-critical { border-left-color: #dc3545; }
+        .border-high { border-left-color: #fd7e14; }
+        .border-medium { border-left-color: #ffc107; }
+        .border-low { border-left-color: #28a745; }
+        .border-info { border-left-color: #17a2b8; }
+        
+        .badge { padding: 4px 8px; border-radius: 12px; font-size: 0.8em; font-weight: bold; color: white; }
+        .badge-medium { color: #333; }
+        
+        .finding-body { padding: 15px; border-top: 1px solid #eee; display: none; }
+        .code-block { background-color: #f1f1f1; padding: 10px; border-radius: 3px; font-family: monospace; white-space: pre-wrap; overflow-x: auto; }
+        
+        .info-grid { display: grid; grid-template-columns: 150px 1fr; gap: 10px; margin-bottom: 15px; }
+        .info-label { font-weight: bold; color: #555; }
+        .info-value { word-break: break-all; }
+        
+        h3 { margin: 0; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Web Vulnerability Scan Report</h1>
+        <div class="info-grid">
+            <div class="info-label">Target:</div><div class="info-value">{{ result.target }}</div>
+            <div class="info-label">Started:</div><div class="info-value">{{ result.started_at }}</div>
+            <div class="info-label">Finished:</div><div class="info-value">{{ result.finished_at }}</div>
+            <div class="info-label">Endpoints:</div><div class="info-value">{{ result.endpoints_discovered|length }}</div>
+        </div>
+        
+        <div class="summary-boxes">
+            <div class="summary-box bg-critical">Critical<br>{{ summary.critical }}</div>
+            <div class="summary-box bg-high">High<br>{{ summary.high }}</div>
+            <div class="summary-box bg-medium">Medium<br>{{ summary.medium }}</div>
+            <div class="summary-box bg-low">Low<br>{{ summary.low }}</div>
+            <div class="summary-box bg-info">Info<br>{{ summary.info }}</div>
+        </div>
+    </div>
+
+    <h2>Findings ({{ result.findings|length }})</h2>
+    
+    {% if not result.findings %}
+        <div class="header">
+            <p>No vulnerabilities were found during this scan.</p>
+        </div>
+    {% endif %}
+
+    {% for finding in result.findings %}
+    <div class="finding">
+        <div class="finding-header border-{{ finding.severity|lower }}" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">
+            <h3>{{ finding.vuln_type }}</h3>
+            <div>
+                <span class="badge bg-{{ finding.severity|lower }} badge-{{ finding.severity|lower }}">{{ finding.severity|upper }}</span>
+            </div>
+        </div>
+        <div class="finding-body">
+            <div class="info-grid">
+                <div class="info-label">URL:</div>
+                <div class="info-value">{{ finding.endpoint.url }}</div>
+                
+                {% if finding.parameter %}
+                <div class="info-label">Parameter:</div>
+                <div class="info-value">{{ finding.parameter }}</div>
+                {% endif %}
+                
+                {% if finding.payload %}
+                <div class="info-label">Payload:</div>
+                <div class="info-value"><div class="code-block">{{ finding.payload }}</div></div>
+                {% endif %}
+                
+                <div class="info-label">Description:</div>
+                <div class="info-value">{{ finding.description }}</div>
+                
+                <div class="info-label">Remediation:</div>
+                <div class="info-value">{{ finding.remediation }}</div>
+                
+                <div class="info-label">Evidence:</div>
+                <div class="info-value"><div class="code-block">{{ finding.evidence }}</div></div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</body>
+</html>

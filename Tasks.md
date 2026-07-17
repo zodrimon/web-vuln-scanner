@@ -204,24 +204,24 @@
 
 ## PHASE 6 — Report Generator
 
-- [ ] **TASK-041** — `report/report_builder.py`:
+- [DONE] **TASK-041** — `report/report_builder.py`:
   `build_report(target: str, started_at, finished_at, endpoints: list[Endpoint], findings: list[Finding]) -> ScanResult`
   plus `summarize(findings: list[Finding]) -> dict[str, int]` (counts by
   severity) used by both renderers.
-- [ ] **TASK-042** — `report/markdown_report.py`:
+- [DONE] **TASK-042** — `report/markdown_report.py`:
   `render_markdown(result: ScanResult) -> str` — target/summary table,
   findings grouped by severity (critical → info), each finding showing
   type, endpoint, parameter, payload, evidence, remediation. Unit test
   snapshotting output structure (not exact bytes) for a sample
   `ScanResult`.
-- [ ] **TASK-043** — `report/templates/report.html.j2`: Jinja2 HTML
+- [DONE] **TASK-043** — `report/templates/report.html.j2`: Jinja2 HTML
   template — clean, single-file (inline CSS, no external assets so the
   report is portable), summary badges by severity color, collapsible
   finding details.
-- [ ] **TASK-044** — `report/html_report.py`: `render_html(result: ScanResult) -> str`
+- [DONE] **TASK-044** — `report/html_report.py`: `render_html(result: ScanResult) -> str`
   rendering the Jinja2 template above. Unit test verifying key fields
   appear in output for a sample `ScanResult`.
-- [ ] **TASK-045** — Commit + push: `TASK-041..044: report generator`.
+- [DONE] **TASK-045** — Commit + push: `TASK-041..044: report generator`.
 
 ## PHASE 7 — CLI Integration
 
